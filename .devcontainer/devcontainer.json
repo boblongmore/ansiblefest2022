@@ -1,0 +1,9 @@
+{
+    "build": { "dockerfile": "./Dockerfile" },
+    "extensions" : [
+        "samuelcolvin.jinjahtml",
+        "zaaack.markdown-editor",
+        "mohsen1.prettify-json",
+        "redhat.ansible"
+    ]
+}

@@ -1,0 +1,9 @@
+ansible
+pyyaml
+virl2_client
+python-dotenv
+prettytable
+ntc_templates
+click
+jinja2
+pyats
