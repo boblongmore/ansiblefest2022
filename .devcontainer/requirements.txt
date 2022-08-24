@@ -8,3 +8,5 @@ click
 jinja2
 pyats
 ansible-pylibssh
+genie
+jsonschema
