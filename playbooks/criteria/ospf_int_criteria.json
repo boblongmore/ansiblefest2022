@@ -1,0 +1,73 @@
+
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "100": {
+        "type": "object",
+        "properties": {
+          "areas": {
+            "type": "object",
+            "properties": {
+              "0.0.0.0": {
+                "type": "object",
+                "properties": {
+                  "interfaces": {
+                    "type": "object",
+                    "patternProperties": {
+                      "^.*": {
+                        "type": "object",
+                        "pattern": "^GigabitEthernet[0-4]$",
+                        "properties": {
+                          "cost": {
+                            "type": "integer"
+                          },
+                          "ip_address": {
+                            "type": "string"
+                          },
+                          "nbrs_count": {
+                            "type": "integer"
+                          },
+                          "nbrs_full": {
+                            "type": "integer"
+                          },
+                          "state": {
+                            "type": "string",
+                            "pattern": "^DR$|^BDR$"
+                          }
+                        },
+                        "required": [
+                          "cost",
+                          "ip_address",
+                          "nbrs_count",
+                          "nbrs_full",
+                          "state"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "GigabitEthernet1"
+                    ]
+                  }
+                },
+                "required": [
+                  "interfaces"
+                ]
+              }
+            },
+            "required": [
+              "0.0.0.0"
+            ]
+          }
+        },
+        "required": [
+          "areas"
+        ]
+      }
+    },
+    "required": [
+      "100"
+    ]
+  }
+  

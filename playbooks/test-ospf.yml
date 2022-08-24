@@ -1,0 +1,59 @@
+---
+- name: test ospf in CML
+  hosts: rtr-branch1
+  gather_facts: false
+
+  tasks:
+    - name: parse show ip ospf neighbors
+      ansible.utils.cli_parse:
+        command: show ip ospf neighbor
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: ospf_neighbors
+      ignore_errors: true
+
+    - name: determine if there are ospf neighbors
+      block:
+        - name: check if error is returned for ospf neighbors
+          debug:
+            msg: "{{ ospf_neighbors['interfaces'] }}"
+          #ignore_errors: true
+        # when: "'error' in ospf_neighbors"
+      rescue:
+        - name: print which device has errors on show ip ospf neighbors
+          debug:
+            msg: "{{ inventory_hostname }} did not return ospf neighbors"
+
+
+    - name: parse show ip ospf interface brief
+      ansible.utils.cli_parse:
+        command: show ip ospf interface brief
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: ospf_interface
+    - name: print ospf interface
+      debug:
+        msg: "{{ ospf_interface['instance'] }}"
+
+    - name: validate ospf interface
+      ansible.utils.validate:
+        data: "{{ ospf_interface['instance'] }}"
+        criteria:
+          - "{{ lookup('file',  './criteria/ospf_int_criteria.json') | from_json }}"
+        engine: ansible.utils.jsonschema
+      ignore_errors: true
+      register: result
+
+    - name: print validate results
+      debug:
+        msg: "{{ inventory_hostname }}: {{ item['data_path'].split('.')[7] }} is not in DR or BDR state"
+      loop: "{{ result['errors'] }}"
+      when: "'errors' in result"
+
+    - name: validate interfaces
+      ansible.utils.cli_parse:
+        command: show interfaces
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: iosxe_show_interface
+      tags: interface
