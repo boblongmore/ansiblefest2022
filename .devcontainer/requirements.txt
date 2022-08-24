@@ -7,3 +7,4 @@ ntc_templates
 click
 jinja2
 pyats
+ansible-pylibssh
