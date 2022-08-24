@@ -1,0 +1,44 @@
+---
+hostname: rtr-core
+
+interfaces:
+  - name: GigabitEthernet1
+    ipv4:
+    - address: 192.168.1.2/24
+  - name: GigabitEthernet2
+    ipv4:
+    - address: 192.168.2.2/24
+  - name: GigabitEthernet3
+    ipv4:
+    - address: 192.168.3.2/24
+
+interface_state:
+  - name: GigabitEthernet1
+    description: Connetion to OSPF neighbor
+    enabled: true
+  - name: GigabitEthernet2
+    description: Connetion to OSPF neighbor
+    enabled: true
+  - name: GigabitEthernet3
+    description: Connetion to OSPF neighbor
+    enabled: true
+
+ospf_interfaces:
+  - name: GigabitEthernet1
+    address_family:
+      - afi: ipv4
+        process:
+          id: 100
+          area_id: 0
+  - name: GigabitEthernet2
+    address_family:
+      - afi: ipv4
+        process:
+          id: 100
+          area_id: 0
+  - name: GigabitEthernet3
+    address_family:
+      - afi: ipv4
+        process:
+          id: 100
+          area_id: 0

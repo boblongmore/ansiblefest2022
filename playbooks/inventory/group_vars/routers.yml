@@ -1,0 +1,44 @@
+ansible_network_os: cisco.ios.ios
+ansible_connection: ansible.netcommon.network_cli
+ansible_user: "admin"
+ansible_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66626665313630336539643135393736613137323330653235623264303733643962323736336430
+          3231663063356466626533363932663533613365666633350a623335636433623865313238626263
+          32343062383939653062633362653766343039656534616635616262653035393039396637373661
+          3462343862356165390a353563326435666464323065373634313763636566363339343439613034
+          6239
+
+ospf:
+  # processes:
+  # - process_id: 100
+  #         areas:
+  #       - area_id: '5'
+  processes:
+  - process_id: 100
+    # max_metric:
+    #   router_lsa: true
+    #   on_startup:
+    #     time: 110
+    # areas:
+    # - area_id: '0'
+    #   capability: true
+    #   authentication:
+    #     enable: true
+    # - area_id: '10'
+    #   authentication:
+    #     message_digest: true
+    #   nssa:
+    #     default_information_originate:
+    #       metric: 10
+    #     translate: suppress-fa
+    #   default_cost: 10
+    #   filter_list:
+    #   - name: test_prefix_in
+    #     direction: in
+    #   - name: test_prefix_out
+    #     direction: out
+    # network:
+    #   address: 192.168.0.0
+    #   wildcard_bits: 0.0.255.255
+    #   area: 0

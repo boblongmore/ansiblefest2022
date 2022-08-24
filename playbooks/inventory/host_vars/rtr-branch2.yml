@@ -1,0 +1,20 @@
+---
+hostname: rtr-branch2
+
+interfaces:
+  - name: GigabitEthernet1
+    ipv4:
+    - address: 192.168.2.1/24
+
+interface_state:
+  - name: GigabitEthernet1
+    description: Connetion to OSPF neighbor
+    enabled: true
+
+ospf_interfaces:
+  - name: GigabitEthernet1
+    address_family:
+      - afi: ipv4
+        process:
+          id: 100
+          area_id: 0
