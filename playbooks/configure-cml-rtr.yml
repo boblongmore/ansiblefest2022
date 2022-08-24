@@ -1,0 +1,28 @@
+---
+- name: configure base environment for CML
+  hosts: routers
+  gather_facts: false
+  # vars:
+  #   ansible_password: admin
+
+  tasks:
+    - name: configure hostname
+      cisco.ios.ios_hostname:
+        config:
+          hostname: "{{ hostname }}"
+
+    - name: configure interfaces
+      cisco.ios.ios_l3_interfaces:
+        config: "{{ interfaces }}"
+
+    - name: configure interface state
+      cisco.ios.ios_interfaces:
+        config: "{{ interface_state }}"
+
+    - name: configure ospf
+      cisco.ios.ios_ospfv2:
+        config: "{{ ospf }}"
+
+    - name: configure ospf interfaces
+      cisco.ios.ios_ospf_interfaces:
+        config: "{{ ospf_interfaces }}"
