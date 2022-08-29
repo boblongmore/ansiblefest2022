@@ -1,0 +1,10 @@
+## Platform Pete Industries - Network Documentation
+
+Router Interfaces
+
+| Interface Name | enabled | line protocol
+| -------------- | ------- | ------------ |
+{% for item in iosxe_show_interface | dict2items %}
+| {{ item.key }} | {{ item.value.enabled }} | {{ item.value.line_protocol }}
+{% endfor %}
+
