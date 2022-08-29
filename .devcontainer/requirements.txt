@@ -10,3 +10,4 @@ pyats
 ansible-pylibssh
 genie
 jsonschema
+pandoc
