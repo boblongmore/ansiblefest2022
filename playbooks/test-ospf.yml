@@ -57,3 +57,16 @@
           name: ansible.netcommon.pyats
         set_fact: iosxe_show_interface
       tags: interface
+  
+    - name: show int status
+      # include_tasks: test-int.yml
+      debug:
+        msg: "{{ item.key }} {{ item.value.enabled }} {{item.value.line_protocol }}"
+      loop: "{{ (iosxe_show_interface | dict2items) }}"
+      tags: interface
+
+    - name: make document
+      ansible.builtin.template:
+        src: templates/rtr-health-report.j2
+        dest: documentation/rtr-health-report.md
+      tags: interface
