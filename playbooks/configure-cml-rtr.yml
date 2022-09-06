@@ -21,7 +21,12 @@
 
     - name: configure ospf
       cisco.ios.ios_ospfv2:
-        config: "{{ ospf }}"
+        config: 
+          processes:
+          - process_id: "{{ ospf['processes']['process_id'] }}"
+            router_id: "{{ item['ipv4'][0]['address'] | ansible.utils.ipaddr('address') | string }}"
+      loop: "{{ hostvars[inventory_hostname]['interfaces'] }}"
+      when: item['name'] == 'Loopback1'
 
     - name: configure ospf interfaces
       cisco.ios.ios_ospf_interfaces:

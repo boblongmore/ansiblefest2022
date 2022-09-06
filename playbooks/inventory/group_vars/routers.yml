@@ -10,35 +10,5 @@ ansible_password: !vault |
           6239
 
 ospf:
-  # processes:
-  # - process_id: 100
-  #         areas:
-  #       - area_id: '5'
   processes:
-  - process_id: 100
-    # max_metric:
-    #   router_lsa: true
-    #   on_startup:
-    #     time: 110
-    # areas:
-    # - area_id: '0'
-    #   capability: true
-    #   authentication:
-    #     enable: true
-    # - area_id: '10'
-    #   authentication:
-    #     message_digest: true
-    #   nssa:
-    #     default_information_originate:
-    #       metric: 10
-    #     translate: suppress-fa
-    #   default_cost: 10
-    #   filter_list:
-    #   - name: test_prefix_in
-    #     direction: in
-    #   - name: test_prefix_out
-    #     direction: out
-    # network:
-    #   address: 192.168.0.0
-    #   wildcard_bits: 0.0.255.255
-    #   area: 0
+    process_id: 100
