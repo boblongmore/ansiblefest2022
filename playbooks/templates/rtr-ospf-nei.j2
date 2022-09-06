@@ -1,0 +1,7 @@
+| Interface Name | Neighbor Router ID | State
+| ---------------- | ------------------ | -------- |
+{% for item in ospf_neighbors %}
+{% for key2, nested_value in item.value.neighbors.items() %}
+| {{ item.key }} | {{ key2 }} | {{ nested_value.state }}| 
+{% endfor %}
+{% endfor %}

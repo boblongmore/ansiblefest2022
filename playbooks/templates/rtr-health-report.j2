@@ -8,3 +8,10 @@ Router Interfaces
 | {{ item.key }} | {{ item.value.enabled }} | {{ item.value.line_protocol }}
 {% endfor %}
 
+Router OSPF Neighbors
+| Interface | Neigbor | State
+| --------- | ------- | ------ |
+{% for item in ospf_neighbors | dict2itmes %}
+| {{ item.key }} | {{ item.value.neighbors }} | {{i tem.value.neighbors[].state }}
+{% endfor %}
+

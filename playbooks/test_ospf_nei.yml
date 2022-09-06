@@ -1,0 +1,36 @@
+---
+- name: test ospf in CML
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+    - name: parse show ip ospf neighbors
+      ansible.utils.cli_parse:
+        command: show ip ospf neighbor
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: ospf_neighbors
+      ignore_errors: true
+
+
+    - name: determine if there are ospf neighbors
+      block:
+        # - name: check if error is returned for ospf neighbors
+        #   debug:
+        #     msg: "{{ ospf_neighbors['interfaces'] }}"
+        - name: collect relevant interface data to create a report
+          set_fact:
+            ospf_neighbors: "{{ ospf_neighbors['interfaces'] | dict2items }}"
+      rescue:
+        - name: print which device has errors on show ip ospf neighbors
+          debug:
+            msg: "{{ inventory_hostname }} did not return ospf neighbors"
+    - name: create document
+      ansible.builtin.blockinfile:
+        block: "{{ lookup('ansible.builtin.template', 'rtr-ospf-nei.j2') }}"
+        dest: documentation/rtr-health-report.md
+        marker: "{mark}"
+        marker_begin: "router: {{inventory_hostname }}"
+        marker_end: "****"
+        insertafter: EOF
+
