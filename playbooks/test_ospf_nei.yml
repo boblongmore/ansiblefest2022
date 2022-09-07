@@ -28,7 +28,7 @@
     - name: create document
       ansible.builtin.blockinfile:
         block: "{{ lookup('ansible.builtin.template', 'rtr-ospf-nei.j2') }}"
-        dest: documentation/rtr-health-report.md
+        dest: "documentation/rtr-health-report.md"
         marker: "{mark}"
         marker_begin: "router: {{inventory_hostname }}"
         marker_end: "****"
