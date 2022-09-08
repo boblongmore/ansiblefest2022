@@ -51,3 +51,14 @@
         marker_begin: "router: {{inventory_hostname }}"
         marker_end: "****"
         insertafter: EOF
+
+    - name: print path
+      shell:
+        cmd: ls
+      register: result
+      run_once: True
+
+    - name: print current path
+      debug:
+        msg: "{{ result }}"
+      run_once: True
