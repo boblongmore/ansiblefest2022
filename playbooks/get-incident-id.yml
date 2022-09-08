@@ -1,0 +1,9 @@
+---
+- name: get incident id from servicenow
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: print incident id
+      debug:
+        msg: "{{ incident_id }}"
