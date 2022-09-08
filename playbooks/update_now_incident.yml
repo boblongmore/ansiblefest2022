@@ -4,6 +4,32 @@
   gather_facts: false
 
   tasks:
+    - name: set file path
+      set_fact:
+        file_path: "router-ospf.md"
+      run_once: True
+
+    #- name: set file path
+    #  set_stats:
+    #    data:
+    #      attachment_path: "{{ file_path }}"
+    #  run_once: True
+
+    - name: create documentation file
+      ansible.builtin.file:
+        path: "{{ file_path }}"
+        state: touch
+      run_once: True
+
+    - name: create document
+      ansible.builtin.blockinfile:
+        block: "{{ lookup('ansible.builtin.template', 'templates/rtr-ospf-nei.j2') }}"
+        dest: "{{ file_path }}"
+        marker: "{mark}"
+        marker_begin: "router: {{inventory_hostname }}"
+        marker_end: "****"
+        insertafter: EOF
+
     - name: Change state of the incident
       servicenow.itsm.incident:
         number: INC0010005

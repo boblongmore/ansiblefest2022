@@ -4,22 +4,7 @@
   gather_facts: false
 
   tasks:
-    - name: set file path
-      set_fact:
-        file_path: "router-ospf.md"
-      run_once: True
-    - name: set file path
-      set_stats:
-        data:
-          attachment_path: "{{ file_path }}"
-      run_once: True
 
-    - name: create documentation file
-      ansible.builtin.file:
-        path: "{{ file_path }}"
-        state: touch
-      run_once: True
-  
     - name: parse show ip ospf neighbors
       ansible.utils.cli_parse:
         command: show ip ospf neighbor
@@ -27,7 +12,6 @@
           name: ansible.netcommon.pyats
         set_fact: ospf_neighbors
       ignore_errors: true
-
 
     - name: determine if there are ospf neighbors
       block:
@@ -42,12 +26,10 @@
           debug:
             msg: "{{ inventory_hostname }} did not return ospf neighbors"
 
-    - name: create document
-      ansible.builtin.blockinfile:
-        block: "{{ lookup('ansible.builtin.template', 'templates/rtr-ospf-nei.j2') }}"
-        dest: "{{ file_path }}"
-        marker: "{mark}"
-        marker_begin: "router: {{inventory_hostname }}"
-        marker_end: "****"
-        insertafter: EOF
+    - name: pass variable to workflow
+      set_stats:
+        data:
+          ospf_neighbors: "{{ ospf_neighbors }}"
+
+
 
