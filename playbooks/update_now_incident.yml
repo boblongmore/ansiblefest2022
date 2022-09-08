@@ -11,7 +11,7 @@
 
     - name: Change state of the incident
       servicenow.itsm.incident:
-        number: INC0010005
+        number: "{{ incident_id }}"
         attachments:
          - path: documentation/rtr-health-report.md
            #path: router-ospf.md

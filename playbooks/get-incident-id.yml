@@ -5,5 +5,6 @@
 
   tasks:
     - name: print incident id
-      debug:
-        msg: "{{ incident_id }}"
+      set_stats:
+        data: 
+          incident_id: "{{ incident_id }}"
