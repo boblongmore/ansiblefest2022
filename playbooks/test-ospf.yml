@@ -69,3 +69,8 @@
       set_stats:
         data:
           interface_report: "{{ iosxe_show_interface }}"
+
+    - name: make document
+      ansible.builtin.template:
+        src: templates/rtr-health-report.j2
+        dest: documentation/rtr-health-report.md

@@ -6,3 +6,5 @@ pyats
 genie
 jsonschema
 pandoc
+pysnow
+requests
