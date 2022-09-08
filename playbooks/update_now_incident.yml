@@ -8,7 +8,7 @@
       servicenow.itsm.incident:
         number: INC0010005
         attachments:
-         - path: "{{ file_path }}"
+         - path: "{{ attachment_path }}"
            #path: router-ospf.md
            type: text/markdown
         state: in_progress
