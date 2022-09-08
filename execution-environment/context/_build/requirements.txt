@@ -1,8 +1,0 @@
-pyyaml
-prettytable
-ntc_templates
-jinja2
-pyats
-genie
-jsonschema
-pandoc

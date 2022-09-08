@@ -1,5 +1,0 @@
----
-collections:
-  - cisco.ios
-  - ansible.utils
-  
