@@ -6,7 +6,7 @@
   tasks:
     - name: print path
       shell:
-        cmd: pwd
+        cmd: ls
       register: result
 
     - name: print current path
@@ -17,8 +17,8 @@
       servicenow.itsm.incident:
         number: INC0010005
         attachments:
-         - #path: "{{ attachment_path }}"
-           path: router-ospf.md
+         - path: "{{ attachment_path }}"
+           #path: router-ospf.md
            type: text/markdown
         state: in_progress
         other:
