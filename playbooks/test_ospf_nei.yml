@@ -6,7 +6,7 @@
   tasks:
     - name: set file path
       set_fact:
-        file_path: "tmp/router-ospf.md"
+        file_path: "router-ospf.md"
       run_once: True
 
     - name: set file path
