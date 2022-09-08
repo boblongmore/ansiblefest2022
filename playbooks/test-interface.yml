@@ -1,0 +1,17 @@
+---
+- name: test ospf in CML
+  hosts: rtr-branch1
+  gather_facts: false
+
+  tasks:
+    - name: validate interfaces
+      ansible.utils.cli_parse:
+        command: show interfaces
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: iosxe_show_interface
+    
+    - name: set stats
+      set_stats:
+        data:
+          interface_report: "{{ iosxe_show_interface }}"
