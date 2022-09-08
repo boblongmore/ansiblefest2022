@@ -6,14 +6,12 @@
   tasks:
     - name: Change state of the incident
       servicenow.itsm.incident:
-        #instance:
-        #  host: https://dev87069.service-now.com
-        #  username: wwt.ansiblefest
-        #  password: "!M^-,N{-2ni_$D3@*GWGFUHboi+J^lwcpK_qY[I:?T"
-        # state: new
-        # number: INC0010003
-        #attachments:
-        # - path: router-ospf.md
-        state: new
-        short_description: created by ansible tower
+        number: INC0010005
+        attachments:
+         - path: "{{ file_path }}"
+           #path: router-ospf.md
+           type: text/markdown
+        state: in_progress
+        other:
+          comments: attached router ospf report
 
