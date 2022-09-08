@@ -4,20 +4,16 @@
   gather_facts: false
 
   tasks:
-    - name: print path
-      shell:
-        cmd: ls
-      register: result
-
-    - name: print current path
-      debug:
-        msg: "{{ result }}"
+    - name: make document
+      ansible.builtin.template:
+        src: templates/rtr-health-report.j2
+        dest: documentation/rtr-health-report.md
 
     - name: Change state of the incident
       servicenow.itsm.incident:
         number: INC0010005
         attachments:
-         - path: "{{ attachment_path }}"
+         - path: documentation/rtr-health-report.md
            #path: router-ospf.md
            type: text/markdown
         state: in_progress

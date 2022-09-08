@@ -65,8 +65,7 @@
       loop: "{{ (iosxe_show_interface | dict2items) }}"
       tags: interface
 
-    - name: make document
-      ansible.builtin.template:
-        src: templates/rtr-health-report.j2
-        dest: documentation/rtr-health-report.md
-      tags: interface
+    - name: set stats
+      set_stats:
+        data:
+          interface_report: "{{ iosxe_show_interface }}"
