@@ -4,20 +4,20 @@
   gather_facts: false
 
   tasks:
-    - name: make router interface document
+    - name: make router health report
       ansible.builtin.template:
-        src: templates/rtr-int-report.j2
-        dest: documentation/rtr-int-report.md
+        src: templates/rtr-health-report.j2
+        dest: documentation/rtr-health-report.md
       run_once: True
-
+  
     - name: Change state of the incident
       servicenow.itsm.incident:
         number: "{{ incident_id }}"
         attachments:
-         - path: documentation/rtr-int-report.md
+         - path: documentation/rtr-health-report.md
            #path: router-ospf.md
            type: text/markdown
         state: in_progress
         other:
-          comments: attached router int report
+          comments: attached router health report
 
