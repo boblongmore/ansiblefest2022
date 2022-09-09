@@ -2,6 +2,8 @@
 - name: test ospf in CML
   hosts: routers
   gather_facts: false
+  vars:
+    ospf_nei_data: {}
 
   tasks:
     - name: set file path
@@ -37,28 +39,45 @@
         #     msg: "{{ ospf_neighbors['interfaces'] }}"
         - name: collect relevant interface data to create a report
           set_fact:
-            ospf_neighbors: "{{ ospf_neighbors['interfaces'] | dict2items }}"
+            ospf_neighbors: "{{ ospf_neighbors }}"
       rescue:
         - name: print which device has errors on show ip ospf neighbors
           debug:
             msg: "{{ inventory_hostname }} did not return ospf neighbors"
 
-    - name: create document
-      ansible.builtin.blockinfile:
-        block: "{{ lookup('ansible.builtin.template', 'templates/rtr-ospf-nei.j2') }}"
-        dest: "{{ file_path }}"
-        marker: "{mark}"
-        marker_begin: "router: {{inventory_hostname }}"
-        marker_end: "****"
-        insertafter: EOF
+    - name: add dict keys for router names
+      set_fact:
+        hostname_ospf_data: "{{ ospf_nei_data | combine({inventory_hostname: ospf_neighbors.interfaces }) }}"
 
-    - name: print path
-      shell:
-        cmd: ls
-      register: result
+    - name: create one dictionary of ospf neighbor data
+      set_fact:
+        ospf_nei_data: "{{ ospf_nei_data | combine(item) }}"
+      loop: >-
+        {{
+          groups['routers']
+          | map("extract", hostvars)
+          | map(attribute="hostname_ospf_data")
+          | list
+          }}
       run_once: True
-
-    - name: print current path
+    
+    - name: print dict
       debug:
-        msg: "{{ result }}"
+        var: ospf_nei_data
       run_once: True
+
+    - name: make ospf nei document
+      ansible.builtin.template:
+        src: templates/rtr-ospf-nei.j2
+        dest: documentation/rtr-ospf-report.md
+      run_once: True
+
+    #- name: create document
+    #  ansible.builtin.blockinfile:
+    #    block: "{{ lookup('ansible.builtin.template', 'templates/rtr-ospf-nei.j2') }}"
+    #    dest: "{{ file_path }}"
+    #    marker: "{mark}"
+    #    marker_begin: "router: {{inventory_hostname }}"
+    #    marker_end: "****"
+    #    insertafter: EOF
+#

@@ -1,7 +1,11 @@
+
+{% for item in ospf_nei_data | dict2items %}
+# {{ item.key }}
 | Interface Name | Neighbor Router ID | State
 | ---------------- | ------------------ | -------- |
-{% for item in ospf_neighbors %}
-{% for key2, nested_value in item.value.neighbors.items() %}
-| {{ item.key }} | {{ key2 }} | {{ nested_value.state }}| 
+{% for k, v in item.value.items() %}
+{% for nei, v2 in v.neighbors.items() %}
+| {{ k }} | {{ nei }} | {{ v2.state }}
+{% endfor %}
 {% endfor %}
 {% endfor %}
