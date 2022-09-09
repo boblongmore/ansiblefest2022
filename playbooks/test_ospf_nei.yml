@@ -7,23 +7,6 @@
     no_ospf_nei_dict: {"interfaces": { "No OSPF int found": {"neighbors":{"No Neighbors Found":{"state":"None"}}}}}
 
   tasks:
-    - name: set file path
-      set_fact:
-        file_path: "router-ospf.md"
-      run_once: True
-
-    - name: set file path
-      set_stats:
-        data:
-          attachment_path: "{{ file_path }}"
-      run_once: True
-
-    - name: create documentation file
-      ansible.builtin.file:
-        path: "{{ file_path }}"
-        state: touch
-      run_once: True
-  
     - name: parse show ip ospf neighbors
       ansible.utils.cli_parse:
         command: show ip ospf neighbor
@@ -35,17 +18,12 @@
 
     - name: determine if there are ospf neighbors
       block:
-        # - name: check if error is returned for ospf neighbors
-        #   debug:
-        #     msg: "{{ ospf_neighbors['interfaces'] }}"
         - name: collect relevant interface data to create a report
           set_fact:
             ospf_neighbors: "{{ ospf_neighbors }}"
       rescue:
-        - name: print which device has errors on show ip ospf neighbors
-          debug:
-            msg: "{{ inventory_hostname }} did not return ospf neighbors"
-        - set_fact:
+        - name: if router has no neighbors create custom error dict
+          set_fact:
             ospf_neighbors: "{{ ospf_neighbors | default ({}) | combine(no_ospf_nei_dict) }}"
 
     - name: add dict keys for router names
@@ -63,24 +41,10 @@
           | list
           }}
       run_once: True
-    
-    - name: print dict
-      debug:
-        var: ospf_nei_data
-      run_once: True
 
-    - name: make ospf nei document
-      ansible.builtin.template:
-        src: templates/rtr-ospf-nei.j2
-        dest: documentation/rtr-ospf-report.md
-      run_once: True
+    - name: set stats to send ospf nei info to workflow
+      set_stats:
+        data:
+          ospf_nei_data: "{{ ospf_nei_data }}"
 
-    #- name: create document
-    #  ansible.builtin.blockinfile:
-    #    block: "{{ lookup('ansible.builtin.template', 'templates/rtr-ospf-nei.j2') }}"
-    #    dest: "{{ file_path }}"
-    #    marker: "{mark}"
-    #    marker_begin: "router: {{inventory_hostname }}"
-    #    marker_end: "****"
-    #    insertafter: EOF
-#
+
