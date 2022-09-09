@@ -1,0 +1,14 @@
+## Platform Pete Industries - Network Documentation
+
+Router Interfaces
+
+
+{% for item in int | dict2items %}
+# {{ item.key }}
+| Interface Name | status | line protocol
+| -------------- | ------- | ------------ |
+{% for k, v in item.value.items() %}
+| {{ k }} | {{ v.status }} | {{ v.protocol }} |
+{% endfor %}
+
+{% endfor %}
