@@ -4,6 +4,7 @@
   gather_facts: false
   vars:
     ospf_nei_data: {}
+    no_ospf_nei_dict: {"interfaces": { "No OSPF int found": {"neighbors":{"No Neighbors Found":{"state":"None"}}}}}
 
   tasks:
     - name: set file path
@@ -44,6 +45,8 @@
         - name: print which device has errors on show ip ospf neighbors
           debug:
             msg: "{{ inventory_hostname }} did not return ospf neighbors"
+        - set_fact:
+            ospf_neighbors: "{{ ospf_neighbors | default ({}) | combine(no_ospf_nei_dict) }}"
 
     - name: add dict keys for router names
       set_fact:
