@@ -1,9 +1,26 @@
-## Platform Pete Industries - Network Documentation
+# Platform Pete Industries - Network Documentation
 
-Router Interfaces
+## Router Interfaces
 
-| Interface Name | enabled | line protocol
+{% for item in interface_data | dict2items %}
+#### **{{ item.key }}**
+| Interface Name | status | line protocol
 | -------------- | ------- | ------------ |
-{% for item in interface_report | dict2items %}
-| {{ item.key }} | {{ item.value.enabled }} | {{ item.value.line_protocol }}
+{% for k, v in item.value.items() %}
+| {{ k }} | {{ v.status }} | {{ v.protocol }} |
 {% endfor %}
+{% endfor %}
+
+## OSPF Neighbors
+
+{% for item in ospf_nei_data | dict2items %}
+### **{{ item.key }}**
+| Interface Name | Neighbor Router ID | State
+| ---------------- | ------------------ | -------- |
+{% for k, v in item.value.items() %}
+{% for nei, v2 in v.neighbors.items() %}
+| {{ k }} | {{ nei }} | {{ v2.state }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
