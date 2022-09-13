@@ -1,5 +1,5 @@
 ---
-hostname: rtr-core
+hostname: rtr_core
 
 interfaces:
   - name: GigabitEthernet1

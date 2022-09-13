@@ -1,5 +1,5 @@
 ---
-hostname: rtr-branch2
+hostname: rtr_branch2
 
 interfaces:
   - name: GigabitEthernet1
@@ -12,7 +12,7 @@ interfaces:
 interface_state:
   - name: GigabitEthernet1
     description: Connection to OSPF neighbor
-    enabled: true
+    enabled: False
 
 ospf_interfaces:
   - name: GigabitEthernet1

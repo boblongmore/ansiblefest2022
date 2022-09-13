@@ -1,5 +1,5 @@
 ---
-hostname: rtr-branch1
+hostname: rtr_branch1
 
 interfaces:
   - name: GigabitEthernet1
