@@ -1,0 +1,12 @@
+## Platform Pete Industries - Network Documentation
+
+## Branch routers pinging **rtr_core**
+| Router Name | successful pings 
+| -------------- | ------- | 
+{% for item in ping_result_data | dict2items %}
+{% if item.value.ping_result == 'passed' %}
+| {{ item.key }} | All Pings Successful
+{% else  %}
+| **{{ item.key }}** | **{{ item.value.ping_result }}**
+{% endif %}
+{% endfor %}
