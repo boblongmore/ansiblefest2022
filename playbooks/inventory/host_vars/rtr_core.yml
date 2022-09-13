@@ -45,3 +45,9 @@ ospf_interfaces:
         process:
           id: 100
           area_id: 0
+  - name: Loopback1
+    address_family:
+      - afi: ipv4
+        process:
+          id: 100
+          area_id: 0
