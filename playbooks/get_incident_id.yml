@@ -1,0 +1,10 @@
+---
+- name: get incident id from servicenow
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: print incident id
+      set_stats:
+        data: 
+          incident_id: "{{ incident_id }}"
