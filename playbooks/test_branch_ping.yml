@@ -50,20 +50,7 @@
           }}
       run_once: True
 
-    - name: print
-      debug:
-        msg: "{{ ping_result_data }}"
-      run_once: True
-
-    - name: make router health report
-      ansible.builtin.template:
-        src: templates/rtr-ping-report.j2
-        dest: documentation/rtr-health-report.md
-      run_once: True
-
-    #- name: set fact for use in workflow
-    #  ansible.builtin.set_stats:
-    #    data:
-    #      def_route_data: "{{ def_route_data }}"
-#
-
+    - name: set fact for use in workflow
+      ansible.builtin.set_stats:
+        data:
+          ping_result_data: "{{ ping_result_data }}"     
