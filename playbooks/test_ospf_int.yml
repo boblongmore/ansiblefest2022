@@ -1,0 +1,61 @@
+---
+- name: test ospf in CML
+  hosts: routers
+  gather_facts: false
+  vars:
+    ospf_error_data: {}
+    
+  tasks:
+    - name: parse and validate ospf interface for BR or BDR state
+      block:
+        - name: parse show ip ospf interface brief
+          ansible.utils.cli_parse:
+            command: show ip ospf interface brief
+            parser:
+              name: ansible.netcommon.pyats
+            set_fact: ospf_interface
+
+        - name: validate ospf interface
+          ansible.utils.validate:
+            data: "{{ ospf_interface['instance'] }}"
+            criteria:
+              - "{{ lookup('file',  './criteria/ospf_int_criteria.json') | from_json }}"
+            engine: ansible.utils.jsonschema
+          # ignore_errors: true
+          register: result
+
+        - name: set router fact
+          set_fact:
+            ospf_int_result: "{{ result }}"
+
+      rescue:
+        - name: print which device has errors on show ip ospf neighbors
+          debug:
+            msg: "{{ inventory_hostname }} did not return ospf neighbors"
+        - name: print result
+          set_fact:
+            ospf_int_result: "{{ result }}"
+
+    - name: add dict keys for router names
+      set_fact:
+        ospf_int_error_data: "{{ ospf_error_data | default ({}) | combine({inventory_hostname: ospf_int_result }) }}"
+
+
+    - name: create one dictionary of ospf neighbor data
+      set_fact:
+        ospf_error_data: "{{ ospf_error_data | combine(item) }}"
+      loop: >-
+        {{
+          groups['routers']
+          | map("extract", hostvars)
+          | map(attribute="ospf_int_error_data")
+          | list
+          }}
+      run_once: True
+
+    - name: set stats for ospf int data to use in workflow
+      set_stats:
+        data:
+          ospf_error_data: "{{ ospf_error_data }}"
+
+

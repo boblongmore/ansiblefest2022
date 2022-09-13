@@ -1,0 +1,12 @@
+## Platform Pete Industries - Network Documentation
+
+Router Interfaces
+
+
+{% for item in ospf_error_data | dict2items %}
+{% if 'errors' in item.value %}
+| Router Name | Process/Area/Interface | State Found |
+| ----------- | ------------------------ | ---------- |
+| {{ item.key }} | {{ item.value.errors[0].data_path }} | {{ item.value.errors[0].found }}
+{% endif %}
+{% endfor %}
