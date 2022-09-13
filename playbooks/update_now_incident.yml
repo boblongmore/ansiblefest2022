@@ -1,9 +1,13 @@
 ---
 - name: update servicenow incident
   hosts: localhost
-  gather_facts: false
+  gather_facts: True
 
   tasks:
+    - name: generate timestamp
+      ansible.builtin.set_fact:
+        current_date: "{{ hostvars['localhost']['ansible_date_time']['date'] }}"
+
     - name: make router health report
       ansible.builtin.template:
         src: templates/rtr-health-report.j2
