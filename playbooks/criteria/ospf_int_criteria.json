@@ -18,7 +18,7 @@
                     "patternProperties": {
                       "^.*": {
                         "type": "object",
-                        "pattern": "^GigabitEthernet[0-4]$",
+                        "pattern": "^GigabitEthernet[0-4]$|^Loopback1$",
                         "properties": {
                           "cost": {
                             "type": "integer"
@@ -34,7 +34,7 @@
                           },
                           "state": {
                             "type": "string",
-                            "pattern": "^DR$|^BDR$"
+                            "pattern": "^DR$|^BDR$|^LOOP$"
                           }
                         },
                         "required": [
