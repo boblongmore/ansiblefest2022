@@ -1,0 +1,12 @@
+## Platform Pete Industries - Network Documentation
+
+## Default Route status for Branch Routers
+| Router Name | Default route Present? 
+| -------------- | ------- | 
+{% for item in def_route_data | dict2items %}
+{% if item.value.default_route == True %}
+| {{ item.key }} | {{ item.value.default_route}}
+{% elif item.value.default_route == False %}
+| **{{ item.key }}** | **{{ item.value.default_route }}**
+{% endif %}
+{% endfor %}
