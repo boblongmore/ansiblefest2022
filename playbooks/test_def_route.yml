@@ -1,0 +1,52 @@
+---
+- name: test for default route in branch routers
+  hosts: branch
+  gather_facts: false
+  
+  tasks:
+    - name: gather show ip route information
+      ansible.utils.cli_parse:
+        command: show ip route 
+        parser:
+          name: ansible.netcommon.pyats
+        set_fact: ios_show_route
+
+    - name: check if default route exists and pupulate dict
+      block:
+        - name: assert that default route exists
+          ansible.builtin.assert:
+            that:
+              - "'0.0.0.0/0' in {{ ios_show_route.vrf.default.address_family.ipv4.routes }}"
+            success_msg: "Default route exists on {{ inventory_hostname }}"
+        - name: set fact for successful assertion
+          ansible.builtin.set_fact:
+            ospf_def_route: {'default_route': True }
+      rescue:
+        - name: set fact for unsuccessful assertion
+          ansible.builtin.set_fact:
+            ospf_def_route: {'default_route': False }
+
+
+
+    - name: add dict keys for router names
+      set_fact:
+        hostname_def_route_data: "{{ def_route_data | default ({}) | combine({inventory_hostname: ospf_def_route }) }}"
+
+    - name: create one dictionary of default route data
+      set_fact:
+        def_route_data: "{{ def_route_data | default ({}) | combine(item) }}"
+      loop: >-
+        {{
+          groups['branch']
+          | map("extract", hostvars)
+          | map(attribute="hostname_def_route_data")
+          | list
+          }}
+      run_once: True
+
+    - name: set fact for use in workflow
+      ansible.builtin.set_stats:
+        data:
+          def_route_data: "{{ def_route_data }}"
+
+
