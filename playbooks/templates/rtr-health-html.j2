@@ -1,0 +1,57 @@
+
+[code]
+<html>
+  <head>
+    <title>Title of the document</title>
+    <style>
+      table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+    </style>
+  </head>
+<!--show interface IP brief data-->
+<h1>Router Interfaces</h1>
+{% for item in interface_data | dict2items %}
+<header>
+  <h2>{{ item.key }}</h2>
+</header>
+<table>
+  <tr>
+    <th>Interface Name</th>
+    <th>Status</th>
+    <th>Line Protocol</th>
+  </tr>
+  {% for k, v in item.value.items() %}
+  <tr>
+    <th>{{ k }}</th>
+    <th>{{ v.status }}</th>
+    <th>{{ v.protocol }}</th>
+  </tr>
+{% endfor %}
+</table>
+{% endfor %}
+<!--show interface IP brief data-->
+<h1> OSPF Neighbors </h1>
+{% for item in ospf_nei_data | dict2items %}
+<header>
+  <h2>{{ item.key }}</h2>
+</header>
+<table>
+  <tr>
+    <th>Interface Name</th>
+    <th>Neighbor Router ID</th>
+    <th>State</th>
+  </tr>
+  {% for k, v in item.value.items() %}
+  {% for nei, v2 in v.neighbors.items() %}
+  <tr>
+    <th>{{ k }}</th>
+    <th>{{ nei }}</th>
+    <th>{{ v2.state }}</th>
+  </tr>
+{% endfor %}
+{% endfor %}
+</table>
+{% endfor %}
+
