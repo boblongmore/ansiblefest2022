@@ -8,10 +8,16 @@
       ansible.builtin.set_fact:
         current_date: "{{ hostvars['localhost']['ansible_date_time']['date'] }}"
 
-    - name: make router health report
+    - name: make router health report in markdown
       ansible.builtin.template:
         src: templates/rtr-health-report.j2
         dest: documentation/rtr-health-report.md
+      run_once: True
+
+    - name: make router health report in html
+      ansible.builtin.template:
+        src: templates/rtr-health-html.j2
+        dest: documentation/rtr-health-html.html
       run_once: True
   
     - name: Change state of the incident
@@ -19,9 +25,9 @@
         number: "{{ incident_id }}"
         attachments:
          - path: documentation/rtr-health-report.md
-           #path: router-ospf.md
            type: text/markdown
         state: in_progress
         other:
-          comments: attached router health report
+          work_notes: "{{ lookup('file', 'documentation/rtr-health-report.html') }}"
+
 
