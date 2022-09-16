@@ -28,6 +28,6 @@
            type: text/markdown
         state: in_progress
         other:
-          work_notes: "{{ lookup('file', 'documentation/rtr-health-report.html') }}"
+          work_notes: "{{ lookup('file', 'documentation/rtr-health-html.html') }}"
 
 
