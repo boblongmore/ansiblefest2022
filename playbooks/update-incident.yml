@@ -1,38 +1,8 @@
 ---
-- name: test ospf in CML
-  hosts: routers
-  gather_facts: false
-  vars:
-    interface_data: {}
-
+- name: update service now incident
+  hosts: localhost
+  gather_facts: True
   tasks:
-    - name: validate interfaces
-      ansible.utils.cli_parse:
-        command: show ip interface brief
-        parser:
-          name: ansible.netcommon.pyats
-        set_fact: iosxe_show_interface
-
-    - name: combine
-      set_fact:
-        hostname_interface_data: "{{ interface_data | combine({inventory_hostname: iosxe_show_interface.interface }) }}"
-
-    - name: data
-      set_fact:
-        interface_data: "{{ interface_data | combine(item) }}"
-      loop: >-
-        {{
-          groups['routers']
-          | map("extract", hostvars)
-          | map(attribute="hostname_interface_data")
-          | list
-          }}
-      run_once: True
-
-    - name: set dictionary as stats for use in workflow
-      set_fact:
-        interface_data: "{{ interface_data }}"
-
     - name: make router health report
       ansible.builtin.template:
         src: templates/rtr-health-html.j2
@@ -48,7 +18,5 @@
         state: in_progress
         other:
           work_notes: "{{ lookup('file', 'documentation/rtr-health-report.html') }}"
-      delegate_to: localhost
-      tags: now
       run_once: True
 

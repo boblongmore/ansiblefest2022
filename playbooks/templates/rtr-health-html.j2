@@ -24,9 +24,9 @@
   </tr>
   {% for k, v in item.value.items() %}
   <tr>
-    <th>{{ k }}</th>
-    <th>{{ v.status }}</th>
-    <th>{{ v.protocol }}</th>
+    <td>{{ k }}</td>
+    <td>{{ v.status }}</td>
+    <td>{{ v.protocol }}</td>
   </tr>
 {% endfor %}
 </table>
@@ -46,12 +46,74 @@
   {% for k, v in item.value.items() %}
   {% for nei, v2 in v.neighbors.items() %}
   <tr>
-    <th>{{ k }}</th>
-    <th>{{ nei }}</th>
-    <th>{{ v2.state }}</th>
+    <td>{{ k }}</th>
+    <td>{{ nei }}</th>
+    <td>{{ v2.state }}</th>
   </tr>
 {% endfor %}
 {% endfor %}
 </table>
 {% endfor %}
-
+<!--show OSPF Interface errors-->
+<h1> OSPF Interface Validation errors </h1>
+<table>
+  <tr>
+    <th>Router Name</th>
+    <th>Process/Area/Interface</th>
+    <th>State Found</th>
+  </tr>
+{% for item in ospf_error_data | dict2items %}
+{% if 'errors' in item.value %}
+  <tr>
+    <td>{{  item.key }}</th>
+    <td>{{ item.value.errors[0].data_path }}</th>
+    <td>{{ item.value.errors[0].found }}</th>
+  </tr>
+{% endif %}
+{% endfor %}
+</table>
+<!--default route information-->
+<h1> Default Route status for Branch Routers </h1>
+<table>
+  <tr>
+    <th>Router Name</th>
+    <th>Default route Present? </th>
+  </tr>
+{% for item in def_route_data | dict2items %}
+{% if item.value.default_route == True %}
+  <tr>
+    <td>{{  item.key }}</th>
+    <td>{{ item.value.default_route }}</th>
+  </tr>
+| {{ item.key }} | {{ item.value.default_route}}
+{% elif item.value.default_route == False %}
+  <tr>
+    <td>{{  item.key }}</th>
+    <td><b>{{ item.value.default_route }}</b></th>
+  </tr>
+{% endif %}
+{% endfor %}
+</table>
+<!--ping information-->
+<h1> Branch routers pinging <b>rtr_core</b> </h1>
+<table>
+  <tr>
+    <th>Router Name</th>
+    <th>successful pings</th>
+  </tr>
+| Router Name | successful pings 
+| -------------- | ------- | 
+{% for item in ping_result_data | dict2items %}
+{% if item.value.ping_result == 'passed' %}
+  <tr>
+    <td>{{  item.key }}</th>
+    <td><b>All Pings Successful</b></th>
+  </tr>
+{% else  %}
+  <tr>
+    <td><b>{{  item.key }}</b></th>
+    <td><b>{{ item.value.ping_result }}</b></th>
+  </tr>
+{% endif %}
+{% endfor %}
+</table>
