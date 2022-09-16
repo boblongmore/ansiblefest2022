@@ -85,7 +85,6 @@
     <td>{{  item.key }}</th>
     <td>{{ item.value.default_route }}</th>
   </tr>
-| {{ item.key }} | {{ item.value.default_route}}
 {% elif item.value.default_route == False %}
   <tr>
     <td>{{  item.key }}</th>
@@ -101,8 +100,6 @@
     <th>Router Name</th>
     <th>successful pings</th>
   </tr>
-| Router Name | successful pings 
-| -------------- | ------- | 
 {% for item in ping_result_data | dict2items %}
 {% if item.value.ping_result == 'passed' %}
   <tr>

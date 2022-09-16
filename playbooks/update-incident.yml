@@ -11,7 +11,7 @@
   
     - name: Change state of the incident
       servicenow.itsm.incident:
-        number: INC0010035
+        number: "{{ incident_id }}"
         # attachments:
         #  - path: documentation/2017Cybersecurity.pdf
         #    # type: text/markdown
