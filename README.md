@@ -7,6 +7,7 @@ The ITSM module used in this demo is accessible through [Red Hat Automation Hub]
 
 ### additional collections required
 [Cisco.IOS](https://docs.ansible.com/ansible/latest/collections/cisco/ios/index.html "cisco.ios collection")
+
 [Ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html "ansible.utils collection")
 
 ### Required python packages are documented in the execution-environment/requirements.txt
@@ -15,7 +16,12 @@ The ITSM module used in this demo is accessible through [Red Hat Automation Hub]
 This Demo was tested and developed with ServiceNow Tokyo version and Ansible Automation Platform 2.2.
 The network under test was an OSPF point-to-point network with three branch routers all connecting back to one core router. The router configuration was done using the playbooks/configure-cml-rtr.yml playbook. Provisioning of the routers was not part of the demo.
 
+![Demo Network](images/DemoNetwork.png.png)
 
+
+The AAP environment used in this Demo consists of one Ansible Automation Controller, Three Exec Nodes, One DB, and One Private Automation Hub. The Automation Hub is used as a private repo for the Execution Environment images.
+
+![Demo AAP2](images/DemoAAP.png)
 
 # Authors
 
