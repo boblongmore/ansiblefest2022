@@ -23,6 +23,26 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
 
 ![Demo AAP2](/images/DemoAAP.png)
 
+### Setup
+
+1. Create Authentication
+   1. Record Redirect URI of your servicenow instance
+   2. Create application in AAP and input the servicenow redirect, record token
+   3. In ServiceNow go to System OAth > Application Registry
+   4. Click the New button to create a new OAuth provider, input your client secret
+   5. Create new OAuth Entity Scope name = Writing Scope, OAuth scope = write
+   6. Create new OAuth Entity Profile add Writing Scope under OAuth Entity Profile Scope
+
+2. Create REST Message
+   1. In AAP find the API endpoint of the template of workflow you wish to launch
+   2. Go to System Web Services > Outbound > REST Messages, click on NEW to create a Rest Message
+   3. Enter the API Endpoint in the Endpoint field
+   4. Authentication type should be OAuth and associate the previously created OAuth profile
+   5. Click the link that says 'Get OAuth Token'
+   6. Create a new HTTP Method
+   7. The mehtod type should be post, put in the API endpoint again
+   8. In the HTTP Request tab, create a new header named Content-Type with a value of application/json
+
 # Authors
 
 - Bob Longmore bob.longmore@wwt.com
