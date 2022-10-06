@@ -1,6 +1,12 @@
 # Ansiblefest2022
 ## 1281 - Network Troubleshooting as Code
 
+## Summary
+
+## Example Output
+
+An example of the report generated in markdown is availale in [playbooks/documentation/rtr-health-report.md](playbooks/documentation/rtr-health-report.md)
+
 ## Required ansible collections are documented in the execution-environment/requirements.yml file
 ### ServiceNow ITSM collection
 The ITSM module used in this demo is accessible through [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/servicenow/itsm "console.redhat.com").
@@ -45,7 +51,7 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
    8. Under the 'Authentication' tab, select 'OAuth 2.0' and select the previously created OAuth profile
    9. Click on the 'HTTP Request' tab and under 'HTTP Headers' click on 'Insert a new row...' The Name should be 'Content-Type' and the values should be 'application/json'
 
-These are the steps to setup communication between ServiceNow and AAP using OAuth. Additionally, if you wanted to pass variables to AAP, you would do that in the HTTP Method screen. In this example I am setting HTTP Query Parameters with the Content ```{"extra_vars": { "incident_id": "${incident_id}" } } ```. I then set the variable substition with 'incident_id.' This allows the workflow to pass the incident ID to AAP when it sends this REST message. There is also a link in this form for 'Preview Script Usage.' You can use this script in settin up the ServiceNow workflow in workflow editor.
+These are the steps to setup communication between ServiceNow and AAP using OAuth. Additionally, if you wanted to pass variables to AAP, you would do that in the HTTP Method screen. In this example I am setting HTTP Query Parameters with the Content ```{"extra_vars": { "incident_id": "${incident_id}" } } ```. I then set the variable substition with 'incident_id.' This allows the workflow to pass the incident ID to AAP when it sends this REST message. There is also a link in this form for 'Preview Script Usage.' You can use this script in setting up the ServiceNow workflow in workflow editor.
 
 </details>
 
