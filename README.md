@@ -30,9 +30,9 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
    1. Record Redirect URI of your servicenow instance. The redirect will be this format ``` {{https://yourinstance}}.service-now.com/oauth_redirect.do ```
    2. In the Ansible Automation Controller (AAC) go to Administration > Applications and add a new application. Give it a name and input the redirect URI. The authorization grant type should be 'Authorization Code' and the Client type should be 'confidential.' This will generate a client ID and client secret. Save these tokens for later use.
    3. In ServiceNow go to System OAth > Application Registry
-   4. Click the New button to create a new OAuth provider, input your client ID and client secret you generated in AAC. Right click the gray bar at the top and click save.
-   5. Create new OAuth Entity Scope name = Writing Scope, OAuth scope = write
-   6. Create new OAuth Entity Profile add Writing Scope under OAuth Entity Profile Scope
+   4. Click the New button to create a new Third-Party OAuth provider, input your client ID and client secret you generated in AAC. The default grant type should be 'Authorization Code.'
+   5. For authorization URL the value will be ``` {{https://your_aac_address}}/api/o/authorize/ ``` and the token URL will be ``` {{https://your_aac_address}}/api/o/token/ ``` Right click on the gray bar at the top and select save.
+   6. Click on the 'OAuth Entity Scopes' tab. Click where it says 'Insert a New Row.' Under Name enter 'Writing Scope' and for OAuth Scope input 'write.' Click update.
 
 2. Create REST Message
    1. In AAP find the API endpoint of the template of workflow you wish to launch
