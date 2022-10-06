@@ -2,6 +2,13 @@
 
 ## OD1281 - Network Troubleshooting as Code
 
+[Presentation Summary](#summary)
+[Example Output](#example-output)
+[Solution Components](#the-components-of-our-solution)
+[Demo Environment](#demo-environment)
+[requirements](#requirements)
+[ServiceNow and AAP Integration](#servicenow-and-aap)
+
 ## Summary
 
 <img align="left" src=/images/platform_pete.png> So often when we think of network automation, we go right to configuration management, which is very powerful. However, there are many ways automation can help us even before we get to changing or updating configurations. Think of when a network team gets a ticket for site degradation or a site down, what are the first troubleshooting steps an engineer takes? 
@@ -83,7 +90,7 @@ Once we have structured data, we can then extract the exact information that we 
 
 #### Testing
 
-In this demo, I am using two testing modules that are included in [ansible.builtin](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html)  and [ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html#plugins-in-ansible-utils) collections. [ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html#plugins-in-ansible-utils) collection: Validate and Assert.
+In this demo, I am using two testing modules that are included in [ansible.builtin](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html)  and [ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html#plugins-in-ansible-utils) collections.
 
 With [Validate](https://docs.ansible.com/ansible/latest/collections/ansible/utils/validate_module.html#ansible-collections-ansible-utils-validate-module), you can match a pattern defined in a jsonschema file to the collected data and validate that the returned data matches that pattern.
 
@@ -127,20 +134,6 @@ The final process looks like this from the time an incident gets opened, to the 
 
 This is a basic example with just four routers, but the ideas could be developed and deployed to suit different environments.
 
-### Required ansible collections are documented in the execution-environment/requirements.yml file
-
-### ServiceNow ITSM collection
-
-The ITSM module used in this demo is accessible through [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/servicenow/itsm "console.redhat.com").
-
-### additional collections required
-
-[Cisco.IOS](https://docs.ansible.com/ansible/latest/collections/cisco/ios/index.html "cisco.ios collection")
-
-[Ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html "ansible.utils collection")
-
-### Required python packages are documented in the execution-environment/requirements.txt
-
 ### Demo Environment
 
 This Demo was tested and developed with ServiceNow Tokyo version and Ansible Automation Platform 2.2.
@@ -152,6 +145,25 @@ The network under test was an OSPF point-to-point network with three branch rout
 The AAP environment used in this Demo consists of one Ansible Automation Controller, Three Exec Nodes, One DB, and One Private Automation Hub. The Automation Hub is used as a private repo for the Execution Environment images.
 
 ![Demo AAP2](/images/DemoAAP.png)
+
+### Requirements
+
+Required ansible collections are documented in the execution-environment/requirements.yml file
+
+#### ServiceNow ITSM collection
+
+The ITSM module used in this demo is accessible through [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/servicenow/itsm "console.redhat.com").
+
+#### Additional Collections Required
+
+[Cisco.IOS](https://docs.ansible.com/ansible/latest/collections/cisco/ios/index.html "cisco.ios collection")
+
+[Ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html "ansible.utils collection")
+
+All required python packages are documented in the file [requirements.txt](execution-environment/requirements.txt)
+All required ansible collections are documented in the file [requirements.yml](execution-environment/requirements.yml)
+
+### ServiceNow and AAP
 
 <details>
   <summary>Setting up AAP and ServiceNow communication</summary>
