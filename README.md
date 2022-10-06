@@ -35,17 +35,20 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
    6. Click on the 'OAuth Entity Scopes' tab. Click where it says 'Insert a New Row.' Under Name enter 'Writing Scope' and for OAuth Scope input 'write.' Click update.
 
 2. Create REST Message
-   1. In AAP find the API endpoint of the template of workflow you wish to launch
+   1. In AAP find the API endpoint of the template of workflow you wish to launch (ex. ``` https://{{your_aac_address}}/api/v2/workflow_job_templates/14/launch/ ```.)
    2. Go to System Web Services > Outbound > REST Messages, click on NEW to create a Rest Message
    3. Enter the API Endpoint in the Endpoint field
    4. Authentication type should be OAuth and associate the previously created OAuth profile
-   5. Click the link that says 'Get OAuth Token'
-   6. Create a new HTTP Method
-   7. The mehtod type should be post, put in the API endpoint again
-   8. In the HTTP Request tab, create a new header named Content-Type with a value of application/json
+   5. Click the link that says 'Get OAuth Token.' This should retrieve the OAuth token from your AAC.
+   6. Once you have the OAuth token, you are ready to create the rest message. Under HTTP methods, click on New.
+   7. The method type should be 'post,' and the API endpoint should be the same as entered previously.
+   8. Under the 'Authentication' tab, select 'OAuth 2.0' and select the previously created OAuth profile
+   9. Click on the 'HTTP Request' tab and under 'HTTP Headers' click on 'Insert a new row...' The Name should be 'Content-Type' and the values should be 'application/json'
+
+These are the steps to setup communication between ServiceNow and AAP using OAuth. Additionally, if you wanted to pass variables to AAP, you would do that in the HTTP Method screen. In this example I am setting HTTP Query Parameters with the Content ```{"extra_vars": { "incident_id": "${incident_id}" } } ```. I then set the variable substition with 'incident_id.' This allows the workflow to pass the incident ID to AAP when it sends this REST message. There is also a link in this form for 'Preview Script Usage.' You can use this script in settin up the ServiceNow workflow in workflow editor.
 
 </details>
+
 # Authors
 
 - Bob Longmore bob.longmore@wwt.com
-
