@@ -121,6 +121,12 @@ We've built many tests located in our playbooks directory. We turn those playboo
 
 ![workflow summary](images/workflow.png)
 
+The final process looks like this from the time an incident gets opened, to the time it updates with the information.
+
+![troubleshooting as code](images/troubleshooting_as_code.png)
+
+This is a basic example with just four routers, but the ideas could be developed and deployed to suit different environments.
+
 ### Required ansible collections are documented in the execution-environment/requirements.yml file
 
 ### ServiceNow ITSM collection
