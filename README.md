@@ -1,17 +1,134 @@
 # Ansiblefest2022
-## 1281 - Network Troubleshooting as Code
+
+## OD1281 - Network Troubleshooting as Code
 
 ## Summary
 
-## Example Output
+<img align="left" src=/images/platform_pete.png> So often when we think of network automation, we go right to configuration management, which is very powerful. However, there are many ways automation can help us even before we get to changing or updating configurations. Think of when a network team gets a ticket for site degradation or a site down, what are the first troubleshooting steps an engineer takes? 
+
+This often involves logging into multiple routers and performing show commands to determine the current state of the network. This is repetitive work and can introduce human error.
+
+What if we could automate those first-level tasks to speed up that process of data gathering? What if we could do some basic testing on that information to get to a faster time to resolution or diagnosis for an issue? That is what this presentation highlights.
+
+Using Ansible Automation Platform and ServiceNow, we can gather this initial information from our network that we can use in the first stages of troubleshooting a potential issue.
+
+### Example Output
 
 An example of the report generated in markdown is availale in [playbooks/documentation/rtr-health-report.md](playbooks/documentation/rtr-health-report.md)
 
-## Required ansible collections are documented in the execution-environment/requirements.yml file
+### The components of our solution
+
+#### IOS Command Module
+
+We could use the [ios_command](https://docs.ansible.com/ansible/latest/collections/cisco/ios/ios_command_module.html) module to issue show commands on our routers. 
+
+```yaml
+---
+- name: show interfaces with command
+  hosts: rtr_core
+  gather_facts: false
+  tasks:
+  - name: show interfaces
+    cisco.ios.command:
+      commands: show ip interface brief
+```
+
+The issue with this is that it returns a list of strings, which can be hard to work with programmatically. 
+
+```json
+"iosxe_show_interface.stdout_lines": [
+        [
+            "Interface              IP-Address      OK? Method Status                Protocol",
+            "GigabitEthernet1       192.168.1.2     YES manual up                    up      ",
+            "GigabitEthernet2       192.168.2.2     YES manual up                    up      ",
+            "GigabitEthernet3       192.168.3.2     YES manual up                    up      ",
+            "GigabitEthernet4       10.253.175.156  YES DHCP   up                    up      ",
+            "Loopback1              100.1.1.1       YES manual up                    up"
+        ]
+    ]
+}
+```
+
+This has all the information we are looking for, but it still takes a human to parse through the mountains of text to make determiniation on what is happening.
+
+#### CLI Parsing
+
+Alternatively, we can use the [cli_parse](https://docs.ansible.com/ansible/latest/collections/ansible/utils/cli_parse_module.html#ansible-collections-ansible-utils-cli-parse-module) module with pyats as the parsing engine to return data in a more structured format.
+
+```yaml
+---
+- name: show interface with parser
+  hosts: rtr_core
+  gather_facts: false  tasks:
+  - name: show interfaces
+    ansible.utils.cli_parse:
+      command: show ip interface brief
+      parser:
+        name: ansible.netcommon.pyats
+```
+
+Once we have structured data, we can then extract the exact information that we want.
+
+```json
+"iosxe_show_interface": {
+    "interface": {
+        "GigabitEthernet1": {
+            "interface_is_ok": "YES",
+            "ip_address": "192.168.1.2",
+            "method": "manual",
+            "protocol": "up",
+            "status": "up"
+         },
+```
+
+#### Testing
+
+In this demo, I am using two testing modules that are included in [ansible.builtin](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html)  and [ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html#plugins-in-ansible-utils) collections. [ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html#plugins-in-ansible-utils) collection: Validate and Assert.
+
+With [Validate](https://docs.ansible.com/ansible/latest/collections/ansible/utils/validate_module.html#ansible-collections-ansible-utils-validate-module), you can match a pattern defined in a jsonschema file to the collected data and validate that the returned data matches that pattern.
+
+With [Assert](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/assert_module.html#ansible-collections-ansible-builtin-assert-module), you can basically ask a boolean question: If this question is true, then my test passes, if this question is false, then my test fails. For our purposes we are asking if the default route of ```0.0.0.0/0``` exists in the routing table.
+
+```yaml
+- name: assert that default route exists
+  ansible.builtin.assert:
+    that:
+    - "'0.0.0.0/0' in {{ routing_table }}"
+```
+
+Once we have our tests in place, if a test fails, then the playbook fails. Ansible gives us a way to handle exceptions with the [blocks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html). Blocks allow us to group tasks together and to handle any errors by using rescue. Below is an example where we are going to build a dictionary based on the results of our test. If our test passes we will add a key to the ```ospf_def_route``` dictionary. If it fails, the rescue block runs, which will also add a key to the ```ospf_def_route``` dictonary with a value of ```False```.
+
+```yaml
+- name: check if default route exists
+  block:
+  - name: assert that default route exists
+    ansible.builtin.assert:
+      that:
+      - "'0.0.0.0/0' in {{ routing_table }}”
+      success_msg: “Default Route Exists”
+  - name: set fact for default route success
+    ansible.builtin.set_fact:
+      ospf_def_route: {'default_route': True }
+  rescue:
+    - name: set fact for unsuccessful assertion
+      ansible.builtin.set_fact:
+        ospf_def_route: {'default_route': False }
+```
+
+#### Bringing it all together
+
+We've built many tests located in our playbooks directory. We turn those playbooks into templates within AAC, we then link those templates into a workflow. The final step of our workflow is to use jinja2 to create both a markdown file to attach to our ServiceNow incident and a HTML output to include inline in incident work notes.
+
+![workflow summary](images/workflow.png)
+
+### Required ansible collections are documented in the execution-environment/requirements.yml file
+
 ### ServiceNow ITSM collection
+
 The ITSM module used in this demo is accessible through [Red Hat Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/servicenow/itsm "console.redhat.com").
 
 ### additional collections required
+
 [Cisco.IOS](https://docs.ansible.com/ansible/latest/collections/cisco/ios/index.html "cisco.ios collection")
 
 [Ansible.utils](https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html "ansible.utils collection")
@@ -19,8 +136,9 @@ The ITSM module used in this demo is accessible through [Red Hat Automation Hub]
 ### Required python packages are documented in the execution-environment/requirements.txt
 
 ### Demo Environment
+
 This Demo was tested and developed with ServiceNow Tokyo version and Ansible Automation Platform 2.2.
-The network under test was an OSPF point-to-point network with three branch routers all connecting back to one core router. The router configuration was done using the playbooks/configure-cml-rtr.yml playbook. Provisioning of the routers was not part of the demo.
+The network under test was an OSPF point-to-point network with three branch routers all connecting back to one core router. The router configuration was done using the playbooks/configure-cml-rtr.yml playbook. Provisioning of the routers was not part of the demo.playbooks/documents/rtr-health-report.md
 
 ![Demo Network](/images/DemoNetwork.png)
 
@@ -55,6 +173,6 @@ These are the steps to setup communication between ServiceNow and AAP using OAut
 
 </details>
 
-# Authors
+## Authors
 
 - Bob Longmore bob.longmore@wwt.com
