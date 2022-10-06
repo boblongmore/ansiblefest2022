@@ -23,7 +23,8 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
 
 ![Demo AAP2](/images/DemoAAP.png)
 
-### Setup
+<details>
+  <summary>Setting up AAP and ServiceNow communication</summary>
 
 1. Create Authentication
    1. Record Redirect URI of your servicenow instance. The redirect will be this format ``` {{https://yourinstance}}.service-now.com/oauth_redirect.do ```
@@ -43,6 +44,7 @@ The AAP environment used in this Demo consists of one Ansible Automation Control
    7. The mehtod type should be post, put in the API endpoint again
    8. In the HTTP Request tab, create a new header named Content-Type with a value of application/json
 
+</details>
 # Authors
 
 - Bob Longmore bob.longmore@wwt.com
