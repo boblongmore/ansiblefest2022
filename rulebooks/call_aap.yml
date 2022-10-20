@@ -9,7 +9,6 @@
         workflow_template: 'eda_response_demo'
         validate_certs: False
         # controller_oauthtoken: cBZnoCEU68Uubprpyeb6MDGGmoel8vV
-        controller_username: admin
-        controller_password: Labpass01!
+
 
         
