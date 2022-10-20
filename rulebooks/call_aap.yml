@@ -1,0 +1,15 @@
+---
+- name: launch troubleshooting workflow in AAC
+  hosts: localhost
+
+  tasks:
+    - name: call AAC URI
+      awx.awx.workflow_launch:
+        controller_host: 10.246.33.16
+        workflow_template: 'eda_response_demo'
+        validate_certs: False
+        # controller_oauthtoken: cBZnoCEU68Uubprpyeb6MDGGmoel8vV
+        controller_username: admin
+        controller_password: Labpass01!
+
+        

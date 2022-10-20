@@ -1,0 +1,19 @@
+---
+- name: update servicenow incident
+  hosts: localhost
+  gather_facts: True
+
+  tasks:
+    - name: Change state of the incident
+      servicenow.itsm.incident:
+        caller: sj
+        state: new
+        short_description: network event has been detected
+        other:
+          assignment_group: Network
+        instance:
+          host: https://dev87069.service-now.com
+          username: admin
+          password: j=h%Htr6X8VE
+
+        

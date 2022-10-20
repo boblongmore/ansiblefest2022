@@ -11,3 +11,6 @@ ansible-pylibssh
 genie
 jsonschema
 pandoc
+wheel
+ansible-rulebook
+ansible-runner
