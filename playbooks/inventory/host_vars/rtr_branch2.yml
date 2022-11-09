@@ -12,7 +12,7 @@ interfaces:
 interface_state:
   - name: GigabitEthernet1
     description: Connection to OSPF neighbor
-    enabled: False
+    enabled: false
 
 ospf_interfaces:
   - name: GigabitEthernet1

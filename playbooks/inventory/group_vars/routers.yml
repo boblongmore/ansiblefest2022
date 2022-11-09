@@ -5,3 +5,11 @@ ansible_password: "admin"
 ospf:
   processes:
     process_id: 100
+
+snmp:
+  hosts:
+    - community_string: librenms
+      host: 10.246.33.52
+  communities:
+    - name: librenms_public
+      rw: true

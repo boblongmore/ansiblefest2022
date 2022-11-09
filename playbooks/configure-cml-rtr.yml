@@ -31,3 +31,7 @@
     - name: configure ospf interfaces
       cisco.ios.ios_ospf_interfaces:
         config: "{{ ospf_interfaces }}"
+      
+    - name: Configure SNMP
+      cisco.ios.ios_snmp_server:
+        config: "{{ snmp }}"
