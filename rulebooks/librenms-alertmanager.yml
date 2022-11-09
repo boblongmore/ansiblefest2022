@@ -1,0 +1,13 @@
+---
+- name: Get events from alertmanager
+  hosts: localhost
+  sources:
+    - ansible.eda.alertmanager:
+        host: 0.0.0.0
+        port: 5050
+  rules:
+    - name: Say Hello
+      condition: event.alert.ifOperStatus == "down"
+      action:
+        run_playbook:
+          name: ansible.eda.hello
