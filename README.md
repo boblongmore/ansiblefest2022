@@ -1,12 +1,19 @@
 # Ansiblefest2022
 
+### [Link to Ansiblefest Video](https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022/session/1657916104035001IRzO)
+
 ## OD1281 - Network Troubleshooting as Code
 
 [Presentation Summary](#summary)
+
 [Example Output](#example-output)
+
 [Solution Components](#the-components-of-our-solution)
+
 [Demo Environment](#demo-environment)
+
 [requirements](#requirements)
+
 [ServiceNow and AAP Integration](#servicenow-and-aap)
 
 ## Summary
