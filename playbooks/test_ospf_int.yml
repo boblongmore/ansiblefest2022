@@ -4,7 +4,6 @@
   gather_facts: false
   vars:
     ospf_error_data: {}
-    
   tasks:
     - name: parse and validate ospf interface for BR or BDR state
       block:
@@ -40,7 +39,6 @@
       set_fact:
         ospf_int_error_data: "{{ ospf_error_data | default ({}) | combine({inventory_hostname: ospf_int_result }) }}"
 
-
     - name: create one dictionary of ospf neighbor data
       set_fact:
         ospf_error_data: "{{ ospf_error_data | combine(item) }}"
@@ -51,11 +49,9 @@
           | map(attribute="ospf_int_error_data")
           | list
           }}
-      run_once: True
+      run_once: true
 
     - name: set stats for ospf int data to use in workflow
       set_stats:
         data:
           ospf_error_data: "{{ ospf_error_data }}"
-
-

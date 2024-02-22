@@ -1,7 +1,8 @@
+---
 ansible_network_os: cisco.ios.ios
 ansible_connection: ansible.netcommon.network_cli
-ansible_user: "admin"
-ansible_password: "admin"
+ansible_user: admin
+ansible_password: admin
 ospf:
   processes:
     process_id: 100

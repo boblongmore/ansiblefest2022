@@ -1,7 +1,7 @@
 ---
 - name: update servicenow incident
   hosts: localhost
-  gather_facts: True
+  gather_facts: true
 
   tasks:
     - name: generate timestamp
@@ -12,20 +12,20 @@
       ansible.builtin.template:
         src: templates/rtr-health-report.j2
         dest: documentation/rtr-health-report.md
-      run_once: True
+      run_once: true
 
     - name: make router health report in html
       ansible.builtin.template:
         src: templates/rtr-health-html.j2
         dest: documentation/rtr-health-html.html
-      run_once: True
-  
+      run_once: true
+
     - name: Change state of the incident
       servicenow.itsm.incident:
         number: "{{ incident_id }}"
         attachments:
-         - path: documentation/rtr-health-report.md
-           type: text/markdown
+          - path: documentation/rtr-health-report.md
+            type: text/markdown
         state: in_progress
         other:
           work_notes: "{{ lookup('file', 'documentation/rtr-health-html.html') }}"

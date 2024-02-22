@@ -3,5 +3,3 @@ collections:
   - cisco.ios
   - ansible.utils
   - servicenow.servicenow
-
-  

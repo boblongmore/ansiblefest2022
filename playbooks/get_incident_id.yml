@@ -6,5 +6,5 @@
   tasks:
     - name: print incident id
       set_stats:
-        data: 
+        data:
           incident_id: "{{ incident_id }}"
