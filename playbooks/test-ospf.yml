@@ -17,13 +17,12 @@
         - name: check if error is returned for ospf neighbors
           debug:
             msg: "{{ ospf_neighbors['interfaces'] }}"
-          #ignore_errors: true
-        # when: "'error' in ospf_neighbors"
+      #ignore_errors: true
+      # when: "'error' in ospf_neighbors"
       rescue:
         - name: print which device has errors on show ip ospf neighbors
           debug:
             msg: "{{ inventory_hostname }} did not return ospf neighbors"
-
 
     - name: parse show ip ospf interface brief
       ansible.utils.cli_parse:
@@ -57,7 +56,7 @@
           name: ansible.netcommon.pyats
         set_fact: iosxe_show_interface
       tags: interface
-  
+
     - name: show int status
       # include_tasks: test-int.yml
       debug:

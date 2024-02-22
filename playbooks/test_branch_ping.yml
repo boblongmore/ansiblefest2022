@@ -2,7 +2,7 @@
 - name: test that branch routers can ping core router
   hosts: branch
   gather_facts: false
-  
+
   tasks:
     - name: gather ping information
       ansible.utils.cli_parse:
@@ -25,18 +25,16 @@
 
         - name: set fact for successful pings
           ansible.builtin.set_fact:
-            ios_ping_result: {'ping_result': 'passed' }
+            ios_ping_result: { ping_result: passed }
       rescue:
         - name: set fact for unsuccessful pings
           ansible.builtin.set_fact:
-            ios_ping_result: {'ping_result': '{{ ios_ping_core.ping.statistics.received }}' }
+            ios_ping_result: { ping_result: "{{ ios_ping_core.ping.statistics.received }}" }
 
 
     - name: add dict keys for router names
       set_fact:
         hostname_ping_result_data: "{{ ping_result_data | default ({}) | combine({inventory_hostname: ios_ping_result }) }}"
-
-
 
     - name: create one dictionary of default route data
       set_fact:
@@ -48,9 +46,9 @@
           | map(attribute="hostname_ping_result_data")
           | list
           }}
-      run_once: True
+      run_once: true
 
     - name: set fact for use in workflow
       ansible.builtin.set_stats:
         data:
-          ping_result_data: "{{ ping_result_data }}"     
+          ping_result_data: "{{ ping_result_data }}"

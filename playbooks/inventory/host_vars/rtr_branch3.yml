@@ -4,10 +4,10 @@ hostname: rtr_branch3
 interfaces:
   - name: GigabitEthernet1
     ipv4:
-    - address: 192.168.3.1/24
+      - address: 192.168.3.1/24
   - name: Loopback1
     ipv4:
-    - address: 1.1.1.3/32
+      - address: 1.1.1.3/32
 
 interface_state:
   - name: GigabitEthernet1
