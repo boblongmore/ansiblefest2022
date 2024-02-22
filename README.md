@@ -1,6 +1,6 @@
 # Ansiblefest2022
 
-### [Link to Ansiblefest Video](https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022/session/1657916104035001IRzO)
+### _link has been deprecated by Red Hat_ [Link to Ansiblefest Video](https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022/session/1657916104035001IRzO)
 
 ## OD1281 - Network Troubleshooting as Code
 
