@@ -1,12 +1,12 @@
 ---
 version: 1
 
-ansible_config: 'ansible.cfg'
+ansible_config: ansible.cfg
 
 dependencies:
   galaxy: requirements.yml
   python: requirements.txt
 
 additional_build_steps:
-  prepend: |
+  prepend: |-
     RUN pip3 install --upgrade pip setuptools

@@ -27,12 +27,10 @@
             ospf_def_route: { default_route: false }
 
     - name: add dict keys for router names
-      set_fact:
+      ansible.builtin.set_fact:
         hostname_def_route_data: "{{ def_route_data | default ({}) | combine({inventory_hostname: ospf_def_route }) }}"
 
     - name: create one dictionary of default route data
-      set_fact:
-        def_route_data: "{{ def_route_data | default ({}) | combine(item) }}"
       loop: >-
         {{
           groups['branch']
@@ -41,6 +39,8 @@
           | list
           }}
       run_once: true
+      ansible.builtin.set_fact:
+        def_route_data: "{{ def_route_data | default ({}) | combine(item) }}"
 
     - name: set fact for use in workflow
       ansible.builtin.set_stats:

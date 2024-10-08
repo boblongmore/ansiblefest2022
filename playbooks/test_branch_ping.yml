@@ -12,7 +12,7 @@
         set_fact: ios_ping_core
 
     - name: print ping info
-      debug:
+      ansible.builtin.debug:
         msg: "{{ ios_ping_core }}"
 
     - name: evaluate if ping is responsive
@@ -33,12 +33,10 @@
 
 
     - name: add dict keys for router names
-      set_fact:
+      ansible.builtin.set_fact:
         hostname_ping_result_data: "{{ ping_result_data | default ({}) | combine({inventory_hostname: ios_ping_result }) }}"
 
     - name: create one dictionary of default route data
-      set_fact:
-        ping_result_data: "{{ ping_result_data | default ({}) | combine(item) }}"
       loop: >-
         {{
           groups['branch']
@@ -47,6 +45,8 @@
           | list
           }}
       run_once: true
+      ansible.builtin.set_fact:
+        ping_result_data: "{{ ping_result_data | default ({}) | combine(item) }}"
 
     - name: set fact for use in workflow
       ansible.builtin.set_stats:

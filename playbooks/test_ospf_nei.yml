@@ -21,16 +21,14 @@
             ospf_neighbors: "{{ ospf_neighbors }}"
       rescue:
         - name: if router has no neighbors create custom error dict
-          set_fact:
+          ansible.builtin.set_fact:
             ospf_neighbors: "{{ ospf_neighbors | default ({}) | combine(no_ospf_nei_dict) }}"
 
     - name: add dict keys for router names
-      set_fact:
+      ansible.builtin.set_fact:
         hostname_ospf_data: "{{ ospf_nei_data | combine({inventory_hostname: ospf_neighbors.interfaces }) }}"
 
     - name: create one dictionary of ospf neighbor data
-      set_fact:
-        ospf_nei_data: "{{ ospf_nei_data | combine(item) }}"
       loop: >-
         {{
           groups['routers']
@@ -39,8 +37,10 @@
           | list
           }}
       run_once: true
+      ansible.builtin.set_fact:
+        ospf_nei_data: "{{ ospf_nei_data | combine(item) }}"
 
     - name: set stats to send ospf nei info to workflow
-      set_stats:
+      ansible.builtin.set_stats:
         data:
           ospf_nei_data: "{{ ospf_nei_data }}"
