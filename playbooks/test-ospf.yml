@@ -21,7 +21,7 @@
       # when: "'error' in ospf_neighbors"
       rescue:
         - name: print which device has errors on show ip ospf neighbors
-          debug:
+          ansible.builtin.debug:
             msg: "{{ inventory_hostname }} did not return ospf neighbors"
 
     - name: parse show ip ospf interface brief
@@ -31,7 +31,7 @@
           name: ansible.netcommon.pyats
         set_fact: ospf_interface
     - name: print ospf interface
-      debug:
+      ansible.builtin.debug:
         msg: "{{ ospf_interface['instance'] }}"
 
     - name: validate ospf interface
@@ -44,10 +44,10 @@
       register: result
 
     - name: print validate results
-      debug:
-        msg: "{{ inventory_hostname }}: {{ item['data_path'].split('.')[7] }} is not in DR or BDR state"
       loop: "{{ result['errors'] }}"
       when: "'errors' in result"
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}: {{ item['data_path'].split('.')[7] }} is not in DR or BDR state"
 
     - name: validate interfaces
       ansible.utils.cli_parse:
@@ -59,13 +59,13 @@
 
     - name: show int status
       # include_tasks: test-int.yml
-      debug:
-        msg: "{{ item.key }} {{ item.value.enabled }} {{item.value.line_protocol }}"
       loop: "{{ (iosxe_show_interface | dict2items) }}"
       tags: interface
+      ansible.builtin.debug:
+        msg: "{{ item.key }} {{ item.value.enabled }} {{item.value.line_protocol }}"
 
     - name: set stats
-      set_stats:
+      ansible.builtin.set_stats:
         data:
           interface_report: "{{ iosxe_show_interface }}"
 

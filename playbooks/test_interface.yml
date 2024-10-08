@@ -13,12 +13,10 @@
         set_fact: iosxe_show_interface
 
     - name: combine
-      set_fact:
+      ansible.builtin.set_fact:
         hostname_interface_data: "{{ interface_data | combine({inventory_hostname: iosxe_show_interface.interface }) }}"
 
     - name: data
-      set_fact:
-        interface_data: "{{ interface_data | combine(item) }}"
       loop: >-
         {{
           groups['routers']
@@ -27,8 +25,10 @@
           | list
           }}
       run_once: true
+      ansible.builtin.set_fact:
+        interface_data: "{{ interface_data | combine(item) }}"
 
     - name: set dictionary as stats for use in workflow
-      set_stats:
+      ansible.builtin.set_stats:
         data:
           interface_data: "{{ interface_data }}"

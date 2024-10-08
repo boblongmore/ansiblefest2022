@@ -5,6 +5,6 @@
 
   tasks:
     - name: print incident id
-      set_stats:
+      ansible.builtin.set_stats:
         data:
           incident_id: "{{ incident_id }}"
